@@ -1,0 +1,216 @@
+<html>
+<head>
+  <meta charset="UTF-8">
+
+  	<title>MedicalDictionary</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+           
+           <script src="jquery-1.11.2.min.js"></script>
+           <script src="jquery-1.11.2.js"></script>
+           <script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script> 
+    	   <script type="text/javascript" src="cordova.js"></script>
+    	   <link rel="stylesheet" href="bootstrap-3.3.4/css/bootstrap.min.css" media="screen" type="text/css" />
+    	   <script src="bootstrap-3.3.4/js/bootstrap.min.js"></script>
+     	   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+     	   <link type="text/css" rel="stylesheet" media="all" href="default.css" id="theme_css" />
+          
+
+<script type="text/javascript">
+$(document).ready(function(){
+
+$('.theme').click(function() {
+var href=$( this ).attr( "href" );
+var font=$( this ).css( "color" );
+document.getElementById('theme_css').href = href;
+return false;
+});
+
+
+  
+$("#medicines").hide();
+$(window).scroll(sticky_relocate);
+sticky_relocate();
+    
+function sticky_relocate() {
+
+    var window_top = $(window).scrollTop();
+    if (window_top > 0) {  
+    $('#sticky').addClass( "stick1" );
+       $('#sticky1').fadeOut();
+       $('#sticky2').fadeOut();
+    } else {
+        $('#sticky').removeClass( "stick1" );
+        $('#sticky1').fadeIn();
+        $('#sticky2').fadeIn();
+    }
+    
+    
+}
+
+
+var input_data=$("#medicine_search").val();	
+$( "#medicine_search" ).autocomplete({
+source: function(request, response, url){ var input_data=$("#medicine_search").val();	
+var data=get_medicine(input_data);}
+ });
+$("#submit").click(function(){
+var input_data=$("#medicine_search").val();	
+var data=get_medicine(input_data);
+return false;
+	
+});
+
+
+function get_medicine(input_data){
+
+if(input_data.length<3)
+{
+document.getElementById("bootstrap").innerHTML = "<div class='alert alert-danger' role='alert'>Type atleast 3 characters</div>";
+$("#medicine_count").html("Type atleast 3characters");
+$("#list_medicine").html("");
+$("#medicines").hide();
+return false;
+}
+
+
+
+var url = 'http://www.truemd.in/api/medicine_suggestions';
+	$.ajax({
+	       type: 'GET',
+		   url: url,
+		   data: {
+                  'id' : input_data, 'key' : '4429b9cf3a455a39fdd7d009aab891','limit':'1000'
+                  },
+		
+		contentType: "application/json",
+		dataType: 'json',
+		//jsonpCallback: 'jsonCallback',
+		 success: function(data) {
+	var get_data='';
+	var new_date='';	
+	var json='[';
+        for(i=0;i<data.response.suggestions.length;i++)
+        {
+        get_data=get_data+'<br>'+"<a style='color:black;font-weight: bold;font-size: 17px' href='medicine_details.html?med="+encodeURIComponent(data.response.suggestions[i].suggestion)+"' target='_blank'>"+data.response.suggestions[i].suggestion+"</a><hr>";
+        console.log("<a href>"+data.response.suggestions[i].suggestion+"</a>");
+        json=json+data.response.suggestions[i].suggestion+',';
+        }
+json=json+']';
+	$("#list_medicine").html(get_data);
+	
+	$("#medicine_count").html(i+ " medicines found!");
+	 document.getElementById("bootstrap").innerHTML = " ";
+	 
+	$("#medicines").show();
+	    console.log(json);
+        return json;
+		},
+		
+		
+    error: function(e) {
+    }
+	});
+	      
+   }
+
+});
+
+</script>
+  
+  <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+		<div class="container-fluid">
+        <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="#">
+        <img src="homecare_logo.png"  alt style="height: 39px;margin-top: -8px;"">
+       </a>
+        
+         
+        </div>
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav">
+                    <li >
+                        <a href="about.html">About</a>
+                    </li>
+                    
+                    <li>
+                        <a href="contactus.html">Contact</a>
+                    </li>
+                   
+                    <li>
+                        <a href="log-in.html">Log out</a>
+                    </li>
+                    <li>
+                      <a href="#" class="dropdown-toggle btn btn-primary"  data-toggle="dropdown" role="button"  aria-haspopup="true" aria-expanded="false"><i class="fa fa-paint-brush"></i><span class="caret" ></span></a>
+        <ul class="dropdown-menu">
+            <li><a href="color1.css" class="red_theme theme"    style="background:linear-gradient(skyblue,LightYellow); color:black"><i class="fa fa-paint-brush"></i></a></li>
+            <li><a href="color2.css" class="blue_theme theme"   style="background:linear-gradient(skyblue,orange);color:black"><i class="fa fa-paint-brush"></i></a></li>
+            <li><a href="color3.css" class="green_theme theme"  style="background:linear-gradient(skyblue,violet); color:black"><i class="fa fa-paint-brush"></i></a></li>
+           
+            <li><a href="color4.css" class="green_theme theme"  style="background:linear-gradient(skyblue,pink);color:black"><i class="fa fa-paint-brush"></i></a></li>
+            <li><a href="color5.css" class="green_theme theme"  style="background:linear-gradient(skyblue,lightgreen); color:black"><i class="fa fa-paint-brush"></i> </a></li>
+            <li><a href="color6.css" class="green_theme theme"  style="background:linear-gradient(gray,white);color:white"><i class="fa fa-paint-brush"></i> </a></li>
+            
+            </ul>
+                    </li>
+                    
+            
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+    <title>MedicalDictionary</title>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+<meta charset="utf-8">
+
+        
+</head>
+
+<div class="form-group">
+<body>
+
+<div class="container-fluid " id="">
+<div class="row-fluid">
+<div class="span12" align="center">
+<div align="center">
+<h3 style="" id="sticky1" ><b>Medical Dictionary</b></h3>
+<span id="bootstrap"></span>
+</div>
+
+<form class="form-search"  style=".dropdown-menu .active > a:hover { color: #333333; text-decoration: none; background-color: rgba(0, 0, 0, 1); }">
+<div class="col-md-offset-3 col-sm-6 col-sm-offset-3">
+<div class="input-group" id="sticky">
+<input id="medicine_search" type="homesearch" autocomplete="off" placeholder="Type a name- eg.Anacin" class="form-control input" data-provide="typeahead" data-items="10" data-source="">
+ 
+   
+<span class="input-group-btn"><a class="btn btn-success" style="font-size: 20px;" type="submit"><i class="glyphicon glyphicon-search"></i></a></span>
+
+</div>
+</form>
+<h1 style="font-size: 15px;font-family: 'Times New Roman';font-weight: bold;"id="sticky2"> <span id="medicines"><span id="medicine_count"></span></h1></span>
+
+</div>
+</div>
+</div>
+</div>
+</div>
+</form>
+
+<span id="list_medicine"></span>
+
+<div align="center">
+</div>
+<br/>
+</div>
+</div>
+</div>
+</div>
+       

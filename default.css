@@ -1,0 +1,68 @@
+a
+{
+color:black;
+font-family: 'Times New Roman';
+}
+#sticky.stick1 {
+    position: fixed;
+    background-color: #01A4EF;
+    left: 3px;
+    top: 52px;
+    z-index: 999;
+}
+
+.patient_info {
+    background-color: #F8F8F8;
+    margin: 3px;
+    margin-top: 0.5px;
+    box-shadow: 0 0 15px skyblue;
+    padding:3px 3px 3px 3px;
+}
+.patient_info1{
+    background-color: #F8F8F8;
+    margin: 3px;
+}
+.col {
+    padding: 0px !important;
+}
+
+hr{
+margin:1px;
+}
+h3{
+    font-family: 'Times New Roman';
+}
+body
+{ 
+ padding-top: 51px;
+ height: 600px;
+ //background: url(background_app.png) no-repeat center center fixed;
+ //background: url(app1.jpg) no-repeat center center fixed;
+  //background: url(app2.jpg) no-repeat center center fixed;
+  background: url(background_img.jpg) no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+
+color:black;
+    margin-top: -14px;
+    margin-bottom: 11px;
+    margin-left: 16px;
+  
+}
+
+
+tr {
+width: 100%;
+display: inline-table;
+}
+
+table{
+ height:300px; 
+}
+tbody{
+  overflow-y: auto;
+  height: 100%;
+  position: absolute;
+}

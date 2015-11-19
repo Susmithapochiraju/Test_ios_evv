@@ -1,0 +1,175 @@
+<html>
+<head>
+  <meta charset="UTF-8">
+
+  	<title>MedicalDictionary</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+           
+           <script src="jquery-1.11.2.min.js"></script>
+           <script src="jquery-1.11.2.js"></script>
+           <script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script> 
+    	   <script type="text/javascript" src="cordova.js"></script>
+    	   <link rel="stylesheet" href="bootstrap-3.3.4/css/bootstrap.min.css" media="screen" type="text/css" />
+    	   <script src="bootstrap-3.3.4/js/bootstrap.min.js"></script>
+     	   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+     	   <link type="text/css" rel="stylesheet" media="all" href="themes/default.css" id="theme_css" />
+           <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css">
+           <link rel="stylesheet" href="css/BootSideMenu.css">
+		   <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+           <script src="//netdna.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+           <script src="js/BootSideMenu.js"></script>
+           
+           <script type="text/javascript">
+$(document).ready(function(){
+
+
+
+$('#demo').BootSideMenu({
+side:"left", // left or right
+autoClose:true // auto close when page loads
+});
+
+$('.theme').click(function() {
+var href=$( this ).attr( "href" );
+var font=$( this ).css( "color" );
+document.getElementById('theme_css').href = href;
+return false;
+});
+
+
+  
+$("#medicines").hide();
+$(window).scroll(sticky_relocate);
+sticky_relocate();
+    
+function sticky_relocate() {
+
+    var window_top = $(window).scrollTop();
+    if (window_top > 0) {
+        $('#sticky').fadeOut();
+    } else {
+        $('#sticky').fadeIn();
+    }
+    
+}
+
+
+var input_data=$("#medicine_search").val();	
+$( "#medicine_search" ).autocomplete({
+source: function(request, response, url){ var input_data=$("#medicine_search").val();	
+var data=get_medicine(input_data);}
+ });
+$("#submit").click(function(){
+var input_data=$("#medicine_search").val();	
+var data=get_medicine(input_data);
+return false;
+	
+});
+
+
+function get_medicine(input_data){
+
+if(input_data.length<3)
+{
+alert("Type atleast 3characters");
+$("#list_medicine").html("");
+$("#medicines").hide();
+return false;
+}
+
+
+
+var url = 'http://www.truemd.in/api/medicine_suggestions';
+	$.ajax({
+	       type: 'GET',
+		   url: url,
+		   data: {
+                  'id' : input_data, 'key' : '4429b9cf3a455a39fdd7d009aab891','limit':'1000'
+                  },
+		
+		contentType: "application/json",
+		dataType: 'json',
+		//jsonpCallback: 'jsonCallback',
+		 success: function(data) {
+	
+	var get_data='<table class="table table-bordered"><tbody>';
+	var new_date='';	
+	var json='[';
+        for(i=0;i<data.response.suggestions.length;i++)
+        {
+        get_data=get_data+''+"<tr><td><i class='fa fa-user-md' style='color:#8AC007;background:white;padding:5px;border-radius:50%;font-weight: bold;font-size: 20px;'></i> <a id='md_list' style='font-weight: bold;' href='medicine_details.html?med="+encodeURIComponent(data.response.suggestions[i].suggestion)+"' target='_blank'>"+data.response.suggestions[i].suggestion+"</a></td></tr>";
+        console.log("<a href>"+data.response.suggestions[i].suggestion+"</a>");
+        json=json+data.response.suggestions[i].suggestion+',';
+         
+        }
+        get_data=get_data+''+"</tbody></table>";
+         
+json=json+']';
+	$("#list_medicine").html(get_data);
+	$("#medicine_count").html(i);
+	$("#medicines").show();
+	    console.log(json);
+    
+	        return json;
+		},
+		
+		
+    error: function(e) {
+    }
+	});
+	      
+   }
+
+});
+
+</script>
+  
+  <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+		<div class="container">
+        <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="#">
+        <img src="homecare_logo.png"  alt style="height: 39px;margin-top: -8px;"">
+       </a>
+        
+         
+        </div>
+    
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav">
+                    <li >
+                        <a href="about.html">About</a>
+                    </li>
+                    
+                    <li>
+                        <a href="contactus.html">Contact</a>
+                    </li>
+                   
+                    <li>
+                        <a href="log-in.html">Log out</a>
+                    </li>
+           <div id="demo">
+
+  <div class="list-group">
+
+    <a href="#" class="list-group-item active">Item 1</a>
+
+    <a href="#" class="list-group-item">Item 2</a>
+
+    <a href="#" class="list-group-item">Item 3</a>
+
+    <a href="#" class="list-group-item">Item 4</a>
+
+    <a href="#" class="list-group-item">Item 5</a>
+
+  
+  </div>
+</div>
+           
+		   

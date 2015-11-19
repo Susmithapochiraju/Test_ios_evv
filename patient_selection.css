@@ -1,0 +1,32 @@
+
+html { height: 100% }
+body { height: 100% }
+#map-container { height: 30% }
+header{
+    background-color:#000000;
+    padding:0;
+    position:absolute;
+    z-index:2;
+    font-size:20px;
+    width:100%;
+    text-align:center;
+    color:#f3f3f3;
+    font-weight:bold;
+    text-shadow:0 -1px 0 rgba(0,0,0,0.5);
+    line-height:45px;
+}
+
+.panel a {color:#777;}
+
+.panel-scroll {
+    			max-height: 320px;
+				overflow: hidden;
+				overflow-y: auto;
+  			  }
+
+.panel a:hover {
+ 				text-decoration:none;
+ 				color:#222;
+			   }
+
+.panel .table td {border-color: #f3f3f3;}

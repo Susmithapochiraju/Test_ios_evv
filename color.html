@@ -1,0 +1,238 @@
+<html>
+<head>
+  <meta charset="UTF-8">
+
+  	<title>MedicalDictionary</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+           <link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+           <script src="jquery-1.11.2.min.js"></script>
+           <script src="jquery-1.11.2.js"></script>
+           <script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script> 
+    	   <script type="text/javascript" src="cordova.js"></script>
+    	   <link rel="stylesheet" href="bootstrap-3.3.4/css/bootstrap.min.css" media="screen" type="text/css" />
+    	   <link rel="stylesheet" href="colorpicker.css" media="screen" type="text/css" />
+     	   <script src="bootstrap-3.3.4/js/bootstrap.min.js"></script>
+     	     <link href="bootstrap-colorpicker-master/dist/css/bootstrap-colorpicker.min.css" rel="stylesheet">
+     	   <script src="bootstrap-colorpicker-master/dist/js/bootstrap-colorpicker.js"></script>
+           <script src="bootstrap-colorpicker-master/src/js/docs.js"></script>
+     	   
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+<style>
+
+#sticky.stick {
+    position: fixed;
+   background-color: #01A4EF;
+}
+body
+{
+color:white;
+background-color: #01A4EF;
+font-family: 'Times New Roman';  
+}
+
+</style>
+
+<script type="text/javascript">
+$(document).ready(function(){
+
+$('.theme').click(function() {
+var col=$( this ).attr( "style" )
+$('body').attr( "style",col )
+});
+
+$('.demo2').colorpicker();
+$('.demo2').colorpicker().on('changeColor.colorpicker', function(event){
+ var color = event.color.toHex();
+  $('body').css( "background-color",color);
+  $('#sticky.stick').css( "background-color",color);
+});
+  
+$("#medicines").hide();
+$(window).scroll(sticky_relocate);
+sticky_relocate();
+    
+function sticky_relocate() {
+
+    var window_top = $(window).scrollTop();
+    if (window_top > 0) {
+        $('#sticky').addClass('stick');
+    } else {
+        $('#sticky').removeClass('stick');
+    }
+}
+
+
+var input_data=$("#medicine_search").val();	
+$( "#medicine_search" ).autocomplete({
+source: function(request, response, url){ var input_data=$("#medicine_search").val();	
+var data=get_medicine(input_data);}
+ });
+$("#submit").click(function(){
+var input_data=$("#medicine_search").val();	
+var data=get_medicine(input_data);
+return false;
+	
+});
+
+
+function get_medicine(input_data){
+
+if(input_data.length<3)
+{
+$("#list_medicine").html("");
+$("#medicines").hide();
+return false;
+}
+
+
+
+var url = 'http://www.truemd.in/api/medicine_suggestions';
+	$.ajax({
+	       type: 'GET',
+		   url: url,
+		   data: {
+                  'id' : input_data, 'key' : '4429b9cf3a455a39fdd7d009aab891','limit':'1000'
+                  },
+		
+		contentType: "application/json",
+		dataType: 'json',
+		//jsonpCallback: 'jsonCallback',
+		 success: function(data) {
+	
+	var get_data='<table class="table table-bordered"><tbody>';
+	var new_date='';	
+	var json='[';
+        for(i=0;i<data.response.suggestions.length;i++)
+        {
+        get_data=get_data+''+"<tr><td><i class='fa fa-user-md' style='color:#8AC007;background:white;padding:5px;border-radius:50%;font-weight: bold;font-size: 20px;'></i>  <a style='color:white;font-weight: bold;' href='medicine_details.html?med="+encodeURIComponent(data.response.suggestions[i].suggestion)+"' target='_blank'>"+data.response.suggestions[i].suggestion+"</a></td></tr>";
+        console.log("<a href>"+data.response.suggestions[i].suggestion+"</a>");
+        json=json+data.response.suggestions[i].suggestion+',';
+         
+        }
+        get_data=get_data+''+"</tbody></table>";
+         
+json=json+']';
+	$("#list_medicine").html(get_data);
+	$("#medicine_count").html(i);
+	$("#medicines").show();
+	    console.log(json);
+    
+	        return json;
+		},
+		
+		
+    error: function(e) {
+    }
+	});
+	      
+   }
+
+});
+
+</script>
+  
+  <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+		<div class="container">
+        <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="#">
+        <img src="homecare_logo.png"  alt style="height: 39px;margin-top: -8px;"">
+       </a>
+        
+         
+        </div>
+    
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav">
+                    <li >
+                        <a href="about.html">About</a>
+                    </li>
+                    
+                    <li>
+                        <a href="contactus.html">Contact</a>
+                    </li>
+                   
+                    <li>
+                        <a href="log-in.html">Log out</a>
+                    </li>
+                    <li>
+                      <a href="#" class="dropdown-toggle btn btn-primary"  data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-paint-brush"></i><span class="caret"></span></a>
+        <ul class="dropdown-menu">
+            <li><a href="#" class="red_theme theme"    style="background-color: Orange;color:white">Orange</a></li>
+            <li><a href="#" class="blue_theme theme"   style="background-color: Red;   color:white">Red</a></li>
+            <li><a href="#" class="green_theme theme"  style="background-color: green; color:white">Green</a></li>
+            <li><a href="#" class="green_theme theme"  style="background-color: white; color:black">White</a></li>
+            <li><a href="#" class="green_theme theme"  style="background-color: black; color:white">Black</a></li>
+            <li><a href="#" class="green_theme theme"  style="background-color: Pink;  color:black">Pink</a></li>
+            <li><a href="#" class="green_theme theme"  style="background-color: Aqua;  color:black">Aqua </a></li>
+            <li><a href="#" class="green_theme theme"  style="background-color: DarkGray;color:white">DarkGray </a></li>
+            
+            
+          </ul>
+                    </li>
+                    
+            
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+    <title>MedicalDictionary</title>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+<meta charset="utf-8">
+<br>
+        
+</head>
+<br>
+
+<div class="form-group">
+<body>
+
+
+
+<div class="container-fluid" id="sticky">
+<br/><br/>
+<div class="row-fluid">
+<div class="span12" align="center">
+<div align="center">
+
+ 
+<h3 style="margin-top:-8px ;">Medical Dictionary</h3>
+</div>
+<p style="margin-left: 100px;margin-right: 100px;"></p>
+<br>
+<form class="form-search"  style=".dropdown-menu .active > a:hover { color: #333333; text-decoration: none; background-color: rgba(0, 0, 0, 1); }">
+<div class="col-md-offset-3 col-sm-6 col-sm-offset-3">
+<div class="input-group">
+<input id="medicine_search" type="homesearch" autocomplete="off" placeholder="Type a name- eg.Anacin" class="form-control input" data-provide="typeahead" data-items="10" data-source="">
+<span class="input-group-btn"><a class="btn btn-success" style="font-size: 20px;" type="submit"><i class="glyphicon glyphicon-search"></i></a></span>
+
+</div>
+</form>
+<h1 style="font-size: 20px;font-family: 'Josefin Sans', sans-serif;font-weight: bold;"> <span id="medicines"><span id="medicine_count">0</span> medicines found!</h1></span>
+
+</div>
+</div>
+</div>
+</div>
+</div>
+</form>
+
+
+<span id="list_medicine"></span>
+
+<div align="center">
+</div>
+<br/>
+</div>
+</div>
+</div>
+</div>
+       

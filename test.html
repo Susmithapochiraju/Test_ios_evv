@@ -1,0 +1,223 @@
+<html>
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+		  	<title>Attendance Monitoring System - Login Form</title>
+			
+			<link rel='stylesheet' href='register.css' type='text/css'/> 
+			
+    		<link rel="stylesheet" href="bootstrap-3.3.4/css/bootstrap.min.css" media="screen" type="text/css" />
+     		<script src="jquery-1.7.min.js"></script>
+    		<script src="jquery-1.11.2.js"></script>
+    		<script type="text/javascript" src="cordova.js"></script>
+    		
+         <script src="bootstrap-3.3.4/js/bootstrap.min.js"></script>
+         <script src="bootbox.js"></script>
+        <script src="bootbox.min.js"></script>
+    		
+<style>
+
+hr { 
+    display: block;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+    margin-left: auto;
+    margin-right: auto;
+    border-style: inset;
+    border-width: 1px;
+} 
+th
+{
+text-align:center !important;
+background-color: skyblue;
+} 
+td
+{
+
+background-color: gray;
+color: white;
+text-align:left !important;
+ white-space: nowrap;
+}
+body
+{
+
+background-color: lightblue;
+}
+
+</style>
+
+
+<script type="text/javascript">
+
+$(document).ready(function(){
+
+var input_data = location.search.split('med=')[1]
+
+input_data =decodeURIComponent(input_data);
+get_medicine(input_data);
+$("#submit").click(function(){
+   var input_data=$("#medicine_search").val();	
+	var data=get_medicine(input_data);
+
+   return false;
+	
+});
+
+function get_alternatives(input_data){
+var url = 'http://www.truemd.in/api/medicine_alternatives/';
+	$.ajax({
+	       type: 'GET',
+		   url: url,
+		   data: {
+                  'id' : input_data, 'key' : '4429b9cf3a455a39fdd7d009aab891' , 'limit' : '100'
+                  },
+                  
+		contentType: "application/json",
+		 dataType: 'json',
+		 success: function(data) {
+    var get_data='<tr><th>Alternatives</th><th>Pack</th><th>Price</th><th> Unit Price </th></center></tr>';
+	var new_date='';	
+	
+		 
+		   for(i=0;i<data.response.medicine_alternatives.length;i++)
+        {
+if(i!=0){
+        get_data=get_data+'<tr><td  align="right">'+data.response.medicine_alternatives[i].brand+'</td><td align="right">'+data.response.medicine_alternatives[i].package_qty+' Tablets'+'</td><td align="right">'+data.response.medicine_alternatives[i].package_price+'</td><td>'+data.response.medicine_alternatives[i].unit_price+'</td></tr>>';
+} 
+        } 
+		 
+ $("#alternative").html(get_data);
+
+		},
+    error: function(e) {
+    }
+	});
+	   
+   }
+
+
+function get_medicine(input_data){
+
+var url = 'http://www.truemd.in/api/medicine_details';
+	$.ajax({
+	       type: 'GET',
+		   url: url,
+		   data: {
+                  'id' : input_data, 'key' : '4429b9cf3a455a39fdd7d009aab891'
+                  },
+		
+		contentType: "application/json",
+		dataType: 'json',
+		//jsonpCallback: 'jsonCallback',
+		 success: function(data) {
+	//alert(data.response.medicine.brand);
+	//alert(data.response.medicine.category);
+	//alert(data.response.medicine.unit_price);
+	//alert(data.response.medicine.package_qty);
+	//alert(data.response.medicine.package_price);
+
+	$("#med_name").html(data.response.medicine.brand);
+	$("#comp_name").html(data.response.medicine.category);
+	$("#price_name").html(data.response.medicine.unit_price);
+	var data1=get_alternatives(input_data);
+		},
+    error: function(e) {
+    }
+	});
+	//http://www.truemd.in/api/medicine_suggestions?callback=jsonCallback&id=A&key=4429b9cf3a455a39fdd7d009aab891&limit=10&_=1439552985461
+       
+   }
+
+});
+
+</script>
+
+          <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+		<a href="log-in.html"><img src="backbutton.png" alt style="height: 50px;float: left;""></a>
+     	<div class="container">
+        <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="#">
+        <img src="homecare_logo.png" alt style="height: 39px;margin-top: -8px;"">
+        </a>
+        </div>
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav">
+                    <li>
+                        <a href="#">About</a>
+                    </li>
+                    <li>
+                        <a href="#">Contact</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+    <title>Attendance System</title>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+<br>
+        
+        
+</head>
+<br>
+<br>
+
+   
+<div class="container">
+                                            
+  <div class="dropdown">
+    <button class="btn btn-default dropdown-toggle" type="button"  id="menu1" data-toggle="dropdown">Recently Viewed
+    <span class="caret"></span></button>
+    <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
+    </ul>
+  </div>
+</div>
+ <div class="form-group">
+        	
+ 
+ <body data-spy="scroll" data-target=".bs-docs-sidebar">
+ 
+<div id="wrapper" style="position:relative;height:297px">
+ 
+<div class="container" align="center">
+<section class="main">
+<div class="circular"></div>
+</section>
+</div>
+
+<br/><br/>
+ 
+ 
+<div class="container-fluid">
+<div class="row-fluid">
+
+<div align="center" style="border:2px solid #ccc;" >
+
+<h3 style="font-size: 20px">Medicine Name:<span id="med_name" style="font-size:15px"></span></h3>
+<h3 style="font-size: 20px">Composition Name:<span id="comp_name" style="font-size:15px"></span></h3>
+<h3 style="font-size: 20px">Price(Rupees):<span id="price_name" style="font-size:15px"></span></h3>
+<hr>
+<div style="height:520px;width:442px;overflow:auto;"  >
+
+<table id="alternative" width="300" style="float: left;">
+
+</table>
+
+</div>
+
+</div>
+</div>
+</div>
+
+<div style="color:#FFFFFF " align="center" id="fixedfooter" >Softima.inc</div>
+</body>
+</html>

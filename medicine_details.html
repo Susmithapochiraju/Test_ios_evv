@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Medical Dictionary</title>
+		 <script src="jquery-1.11.2.min.js"></script>
+           <script src="jquery-1.11.2.js"></script>
+           <script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script> 
+    	   <script type="text/javascript" src="cordova.js"></script>
+    	   <link rel="stylesheet" href="bootstrap-3.3.4/css/bootstrap.min.css" media="screen" type="text/css" />
+    	   <script src="bootstrap-3.3.4/js/bootstrap.min.js"></script>
+     	   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+     	   <link type="text/css" rel="stylesheet" media="all" href="default.css" id="theme_css" />
+<style type="text/css">
+
+.container{
+padding-left:0px !important;
+}
+body
+{
+  height: 600px;
+  padding-top: 79px;
+  background: url(background_img.jpg) no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  margin-top:-23px;
+  font-size: 14px;
+  font-family: 'Times New Roman';
+  overflow-y: hidden;
+}
+
+.h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6
+{
+line-height:0.1px !important;
+font-family: 'Times New Roman'
+}
+
+</style>
+<script type="text/javascript">
+
+$(document).ready(function(){
+
+$('.theme').click(function() {
+var col=$( this ).attr( "style" );
+var font=$( this ).css( "color" );
+$('body').attr( "style",col );
+$(' a').css( "color",font );
+});
+
+
+var input_data = location.search.split('med=')[1]
+input_data =decodeURIComponent(input_data);
+get_medicine(input_data);
+$("#submit").click(function(){
+   var input_data=$("#medicine_search").val();	
+	var data=get_medicine(input_data);
+   return false;
+	
+});
+
+
+function get_alternatives(input_data){
+
+
+var url = 'http://www.truemd.in/api/medicine_alternatives/';
+	$.ajax({
+	       type: 'GET',
+		   url: url,
+		   data: {
+                  'id' : input_data, 'key' : '4429b9cf3a455a39fdd7d009aab891' , 'limit' : '1000'
+                  },
+		contentType: "application/json",
+		 dataType: 'json',
+		 success: function(data) {
+    var get_data='';
+	var new_date='';
+	
+	
+		   for(i=0;i<data.response.medicine_alternatives.length;i++)
+        {
+
+if(i!=0){
+     var type="";
+        if(data.response.medicine_alternatives[i].unit_type!="Tablet")
+        {
+        type=data.response.medicine_alternatives[i].unit_type;
+        }
+
+        get_data1='<em class="glyphicon-tablet"></em><b><a href="medicine_details.html?med='+encodeURIComponent(data.response.medicine_alternatives[i].brand)+'" style="color:black</b> ">'+data.response.medicine_alternatives[i].brand+'</a><br><span>'+data.response.medicine_alternatives[i].package_qty+' '+type+' '+data.response.medicine_alternatives[i].category+'<span style=" float:right;"><i class="fa fa-rupee"></i> '+data.response.medicine_alternatives[i].package_price.toFixed(2)+'</span><span>';
+        get_data=get_data+'<tr><td>'+get_data1+'</td></tr>';
+        
+} 
+        } 
+if(i<=1)
+{
+document.getElementById("alternative1").innerHTML = "<tr><td><b>No Alternatives found</b></td></tr>";
+
+}
+
+else
+{
+ $("#alternative").html(get_data);
+}
+		},
+    error: function(e) {
+    }
+	});
+	   
+   }
+
+
+function get_medicine(input_data){
+
+var url = 'http://www.truemd.in/api/medicine_details';
+	$.ajax({
+	       type: 'GET',
+		   url: url,
+		   data: {
+                  'id' : input_data, 'key' : '4429b9cf3a455a39fdd7d009aab891'
+                  },
+		
+		contentType: "application/json",
+		dataType: 'json',
+		 success: function(data) {
+	$("#med_name").html(data.response.medicine.brand);
+	$("#comp_name").html(data.response.medicine.category);
+	$("#price_name").html(data.response.medicine.unit_price);
+	var data1=get_alternatives(input_data);
+		},
+    error: function(e) {
+    }
+	});
+	
+   }
+
+});
+
+</script>
+
+</head>
+
+<body>
+
+<nav class="navbar navbar-default navbar-fixed-top" style="color:#FFFFFF" role="navigation">
+<a href="search.html"><img src="backbutton.png" alt style="height: 50px;float: left;""></a>
+        <div class="container-fluid">
+        <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="#">
+        <img src="homecare_logo.png"  alt style="height: 39px;margin-top: -8px;"">
+       </a>
+        
+         
+        </div>
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav">
+                    <li >
+                        <a href="about.html">About</a>
+                    </li>
+                    
+                    <li>
+                        <a href="contactus.html">Contact</a>
+                    </li>
+                   
+                    <li>
+                        <a href="log-in.html">Log out</a>
+                    </li>
+                    <li>
+                      <a href="#" class="dropdown-toggle btn btn-primary"  data-toggle="dropdown" role="button"  aria-haspopup="true" aria-expanded="false"><i class="fa fa-paint-brush"></i><span class="caret" ></span></a>
+           <ul class="dropdown-menu">
+            <li><a href="#" class="red_theme theme"    style="background:linear-gradient(skyblue,LightYellow) no-repeat center center fixed; color:black"><i class="fa fa-paint-brush"></i></a></li>
+            <li><a href="#" class="blue_theme theme"   style="background:linear-gradient(skyblue,orange) no-repeat center center fixed;color:black"><i class="fa fa-paint-brush"></i></a></li>
+            <li><a href="#" class="green_theme theme"  style="background:linear-gradient(skyblue,violet) no-repeat center center fixed; color:black"><i class="fa fa-paint-brush"></i></a></li>
+           
+            <li><a href="#" class="green_theme theme"  style="background:linear-gradient(skyblue,pink) no-repeat center center fixed; color:black"><i class="fa fa-paint-brush"></i></a></li>
+            <li><a href="#" class="green_theme theme"  style="background:linear-gradient(skyblue,lightgreen) no-repeat center center fixed; color:black"><i class="fa fa-paint-brush"></i> </a></li>
+            <li><a href="#" class="green_theme theme"  style="background:linear-gradient(gray,white) no-repeat center center fixed;color:white"><i class="fa fa-paint-brush"></i> </a></li>
+             
+            </ul>
+                    </li>
+                    
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+    
+    
+   </ul>
+   <div class="container">
+<div class="row">
+<div class="container">
+<p><h3 style="padding-bottom: 12px;"><center><b>Medical Dictionary</b></center></h3></p>
+
+          <h3 style="font-size: 17px"><b>Medicine Name</b>:&nbsp&nbsp<b><span id="med_name" style="font-size:17px"></span></b></h3>
+          <h3 style="font-size: 17px"><b>Composition Type</b>:&nbsp&nbsp<b><span id="comp_name" style="font-size:17px"></span></b></h3>
+          <h3 style="font-size: 17px; margin-top:14px" ><b><i class="fa fa-rupee"></i></b>&nbsp<b><span id="price_name" style="font-size:17px"></span></b></h3>
+          
+
+<div class="bs-example">
+<center>
+<div class="">
+    <ul class="nav nav-tabs" >
+    
+        <li class="tabfont active" style="width: 50%;"><a data-toggle="tab" href="#Alternatives">Alternatives</a> </li>
+         <li class="tabfont" style="width: 50%;"><a data-toggle="tab" href="#Recently_Viewed">Recently Viewed</a></li>
+       
+    </ul>
+    </div>
+    </center>
+        <div id="Alternatives" class="tab-pane fade in active" margin-right: -2px;border: 1px solid;>
+          
+             
+             
+<table class="table">
+<tbody id="alternative">
+ <tr><td ><i style="font-size: 50px" class="fa fa-spinner fa-spin"></i></td></tr>
+  
+</tbody>
+</table>
+  
+        </div>
+        <div id="Recently_Viewed" class="tab-pane fade"  border:11px solid>
+            <h3>Recently_Viewed</h3>
+            
+        </div>
+        
+    </div>
+</div>
+
+
+<nav class="navbar navbar-default navbar-fixed-bottom" style="color:#FFFFFF" role="navigation">
+<a href="search.html"><center><br><b>SOFTIMA.INC</b></center></a>
+</body>
+</html>
+                               		
